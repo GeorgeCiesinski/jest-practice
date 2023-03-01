@@ -1,19 +1,41 @@
-
+/* Return the shifted index
+ * 
+ * If the shift 
+ */
+function shiftIndex(index, shift) {
+    const shifted = index + shift;
+    if (shifted > 26) {
+        return shifted % 26;
+    } else return shifted;
+}
 
 function caesarCipher(message, shift) {
     if (typeof(message) !== 'string') throw new TypeError('message must be a string value');
-    if (typeof(shift) !== 'integer') throw new TypeError('shift must be an integer value');
+    if (!Number.isInteger(shift)) throw new TypeError('shift must be an integer value');
 
-    let result = '';
+    // Create uppercase and lowercase alphabet arrays
+    const upperAlphabet = Array.from({length: 26}, (_,i) => String.fromCharCode(i + 65));
+    const lowerAlphabet = Array.from({length: 26}, (_,i) => String.fromCharCode(i + 97));
 
-    // Create uppercase alphabet array
-    // Create lowercase alphabet array
+    const messageArray = message.split('');
+    const resultArray = [];
 
-    // Iterate over string to see if it is in upper or lowercase alphabet array
-        // Depending on which array it is in, return the character the shifted index amount
-            // Check if shift exceeds array index, in which case loop back around to the start
-
-    return result;
+    for (const char of messageArray) {
+        if (upperAlphabet.includes(char)) {
+            let charIndex = upperAlphabet.indexOf(char);
+            resultArray.push(upperAlphabet[shiftIndex(charIndex, shift)]);
+        } else if (lowerAlphabet.includes(char)) {
+            let charIndex = lowerAlphabet.indexOf(char);
+            resultArray.push(lowerAlphabet[shiftIndex(charIndex, shift)]);
+        } else if (char === ' ') {
+            resultArray.push(char);
+        } else {
+            console.log(char);
+            throw new TypeError('message must only contain alphabet characters and spaces');
+        }
+    }
+    
+    return resultArray.join('');
 }
 
 export default caesarCipher;
